@@ -1,0 +1,54 @@
+--1
+SELECT  t.name||' '||t.surname AS fio, g.name
+FROM public.teachers t, public."groups" g, public.lectures l, public.groups_lectures gl
+WHERE t.id=l.teacher_id AND l.id=gl.lecture_id AND g.id = gl.group_id; 
+
+--2
+SELECT  f.name
+FROM public.faculties f
+WHERE f.financing < (SELECT SUM(financing) FROM public.departments d WHERE d.faculty_id = f.id); 
+
+--3
+SELECT c.surname, g.name
+FROM public.curators c, public.groups g, public.groups_curators gc
+WHERE gc.group_id = g.id AND gc.curator_id = c.id;
+
+--4
+SELECT c.surname, g.name
+FROM public.curators c, public.groups g, public.groups_curators gc
+WHERE gc.group_id = g.id AND gc.curator_id = c.id;
+
+--5
+SELECT t.surname AS teacher_on_faculty, f.name AS faculty_name
+FROM public.teachers t, public.lectures l, public.groups_lectures gl, public.groups g, public.departments d,public.faculties f
+WHERE t.id = l.teacher_id AND gl.lecture_id = l.id AND g.id = gl.group_id AND g.department_id=d.id AND d.faculty_id = f.id;
+
+--6
+SELECT d.name, g.name
+FROM public.departments d, public.groups g
+WHERE g.department_id = d.id;
+
+--7
+SELECT d.name, g.name
+FROM public.departments d, public.groups g
+WHERE g.department_id = d.id;
+
+--8
+SELECT d.name
+FROM public.subjects s, public.departments d, public.lectures l, public.groups_lectures gl, public.groups g
+WHERE s.name LIKE 'Database Theory' AND s.id = l.subject_id AND l.id = gl.lecture_id AND gl.group_id =g.id AND g.department_id = d.id;
+
+--9
+SELECT g.name
+FROM public.groups g, public.departments d, public.faculties f
+WHERE g.department_id = d.id AND d.faculty_id = f.id AND f.name LIKE 'Computer Science';
+
+--10
+SELECT g.name, f.name
+FROM public.groups g, public.departments d, public.faculties f
+WHERE g.department_id = d.id AND d.faculty_id = f.id AND g."year" = 5;
+
+--11
+SELECT DISTINCT t."name"||' '||t.surname AS fullname, s.name, g.name
+FROM public.groups g, public.departments d, public.lectures l, public.teachers t, public.subjects s, public.groups_lectures gl
+WHERE t.id = l.teacher_id AND l.id = gl.lecture_id AND l.subject_id= s.id AND gl.group_id = g.id AND l.lecture_room LIKE 'B103';
